@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html l<html lang="id" class="scroll-smooth">
+    ang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Pribadi - Modern Dark Crimson</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            base: '#0a0a0c',
+                            surface: '#121217',
+                            card: '#181820',
+                            border: '#2a2a36'
+                        },
+                        crimson: {
+                            DEFAULT: '#ff2b4a',
+                            hover: '#e01e3d',
+                            glow: 'rgba(255, 43, 74, 0.35)',
+                            dark: '#9e0018'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Custom Glow and Scrollbar Styles */
+        body {
+            background-color: #0a0a0c;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a36;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff2b4a;
+        }
+
+        /* Neon Glow Effects */
+        .crimson-glow {
+            box-shadow: 0 0 25px rgba(255, 43, 74, 0.25);
+        }
+        .crimson-glow-lg {
+            box-shadow: 0 0 45px rgba(255, 43, 74, 0.35);
+        }
+        .text-glow {
+            text-shadow: 0 0 12px rgba(255, 43, 74, 0.5);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(24, 24, 32, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Pulse Animation for Availability Indicator */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .pulse-dot {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        /* Interactive Lab Playground Canvas */
+        #canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-200 selection:bg-crimson selection:text-white">
+
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-crimson to-crimson-dark flex items-center justify-center font-extrabold text-white text-xl shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+                    A
+                </div>
+                <span class="font-bold text-xl tracking-tight text-white group-hover:text-crimson transition-colors">
+                    Alex<span class="text-crimson">.dev</span>
+                </span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#home" class="hover:text-crimson transition-colors py-1">Home</a>
+                <a href="#work" class="hover:text-crimson transition-colors py-1">Work</a>
+                <a href="#lab" class="hover:text-crimson transition-colors py-1">Lab</a>
+                <a href="#about" class="hover:text-crimson transition-colors py-1">About</a>
+                <a href="#contact" class="hover:text-crimson transition-colors py-1">Contact</a>
+            </nav>
+
+            <!-- Status Indicator & CTA Button -->
+            <div class="hidden lg:flex items-center gap-5">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-dark-card border border-dark-border text-xs text-slate-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-crimson pulse-dot"></span>
+                    <span>Available for work</span>
+                </div>
+                <a href="#contact" class="px-5 py-2.5 rounded-xl bg-crimson hover:bg-crimson-hover text-white font-semibold text-sm transition-all duration-300 crimson-glow hover:shadow-crimson-glow-lg hover:-translate-y-0.5">
+                    Let's Talk
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-crimson focus:outline-none p-2" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Modal -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-b border-dark-border px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" class="mobile-nav-link block px-3 py-2 rounded-lg hover:bg-crimson/10 hover:text-crimson transition-colors">Home</a>
+            <a href="#work" class="mobile-nav-link block px-3 py-2 rounded-lg hover:bg-crimson/10 hover:text-crimson transition-colors">Work</a>
+            <a href="#lab" class="mobile-nav-link block px-3 py-2 rounded-lg hover:bg-crimson/10 hover:text-crimson transition-colors">Lab</a>
+            <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-lg hover:bg-crimson/10 hover:text-crimson transition-colors">About</a>
+            <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-lg hover:bg-crimson/10 hover:text-crimson transition-colors">Contact</a>
+            <div class="pt-2 flex items-center justify-between border-t border-dark-border mt-3">
+                <div class="flex items-center gap-2 text-xs text-slate-300">
+                    <span class="w-2.5 h-2.5 rounded-full bg-crimson pulse-dot"></span>
+                    <span>Available for work</span>
+                </div>
+                <a href="#contact" class="mobile-nav-link px-4 py-2 rounded-lg bg-crimson text-white text-xs font-semibold">Let's Talk</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="relative pt-36 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        <!-- Radial Gradient Lights Background -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-crimson/15 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute top-1/3 left-10 w-72 h-72 bg-crimson-dark/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel text-xs md:text-sm text-crimson font-medium border border-crimson/30">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Creative Frontend Engineer & UI Designer</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
+                        Halo, saya <span class="text-transparent bg-clip-text bg-gradient-to-r from-crimson via-red-400 to-white">Alex Prasetyo.</span>
+                    </h1>
+
+                    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Saya merancang dan membangun pengalaman digital interaktif yang elegan, performan tinggi, dan berfokus pada hasil bagi pengguna global.
+                    </p>
+
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#work" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-crimson hover:bg-crimson-hover text-white font-bold text-base transition-all duration-300 crimson-glow hover:shadow-crimson-glow-lg flex items-center justify-center gap-3 group">
+                            <span>Lihat Proyek Saya</span>
+                            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel hover:bg-dark-card text-slate-200 hover:text-white font-semibold text-base transition-all duration-300 border border-dark-border hover:border-crimson/50 flex items-center justify-center gap-3">
+                            <span>Hubungi Saya</span>
+                            <i class="fa-solid fa-paper-plane text-crimson"></i>
+                        </a>
+                    </div>
+
+                    <!-- Key Stats Bar -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-dark-border max-w-lg mx-auto lg:mx-0">
+                        <div class="text-center lg:text-left">
+                            <span class="block text-2xl md:text-3xl font-extrabold text-white">5+</span>
+                            <span class="text-xs md:text-sm text-slate-400">Tahun Pengalaman</span>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <span class="block text-2xl md:text-3xl font-extrabold text-white">40+</span>
+                            <span class="text-xs md:text-sm text-slate-400">Proyek Selesai</span>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <span class="block text-2xl md:text-3xl font-extrabold text-white">99%</span>
+                            <span class="text-xs md:text-sm text-slate-400">Kepuasan Klien</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Hero Card Display -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md group">
+                        <!-- Glow behind card -->
+                        <div class="absolute -inset-1 bg-gradient-to-r from-crimson to-red-800 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                        
+                        <div class="relative glass-panel rounded-2xl p-6 sm:p-8 border border-dark-border space-y-6">
+                            <div class="flex items-center justify-between pb-4 border-b border-dark-border">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <span class="text-xs font-mono text-slate-400">alex_portfolio.config.js</span>
+                            </div>
+
+                            <!-- Code Block Visual -->
+                            <div class="font-mono text-xs sm:text-sm space-y-2 text-slate-300">
+                                <p><span class="text-crimson">const</span> <span class="text-amber-300">developer</span> = {</p>
+                                <p class="pl-4"><span class="text-slate-400">name:</span> <span class="text-green-400">'Alex Prasetyo'</span>,</p>
+                                <p class="pl-4"><span class="text-slate-400">role:</span> <span class="text-green-400">'Fullstack Specialist'</span>,</p>
+                                <p class="pl-4"><span class="text-slate-400">skills:</span> [<span class="text-green-400">'React'</span>, <span class="text-green-400">'TypeScript'</span>, <span class="text-green-400">'Tailwind'</span>],</p>
+                                <p class="pl-4"><span class="text-slate-400">passion:</span> <span class="text-green-400">'Building Pixel-Perfect Web Apps'</span></p>
+                                <p>};</p>
+                            </div>
+
+                            <!-- Interactive Card Feature -->
+                            <div class="pt-4 p-4 rounded-xl bg-dark-card border border-dark-border flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-crimson/20 border border-crimson/40 flex items-center justify-center text-crimson">
+                                        <i class="fa-solid fa-code text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-semibold text-white">Clean Architecture</h4>
+                                        <p class="text-[11px] text-slate-400">Modern & Scalable Codebase</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-crimson font-semibold">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <div class="flex items-center gap-2 text-crimson font-semibold text-sm tracking-wider uppercase mb-2">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Portofolio Karya</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Proyek Pilihan.</h2>
+                </div>
+
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap gap-2" id="project-filters">
+                    <button data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 bg-crimson text-white crimson-glow">
+                        Semua
+                    </button>
+                    <button data-filter="webapp" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 glass-panel hover:bg-dark-card text-slate-300 hover:text-white border border-dark-border">
+                        Web App
+                    </button>
+                    <button data-filter="uiux" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 glass-panel hover:bg-dark-card text-slate-300 hover:text-white border border-dark-border">
+                        UI/UX Design
+                    </button>
+                    <button data-filter="mobile" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 glass-panel hover:bg-dark-card text-slate-300 hover:text-white border border-dark-border">
+                        Mobile App
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bento Grid Portfolio Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- Project Item 1 -->
+                <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-dark-border hover:border-crimson/50 transition-all duration-500 flex flex-col justify-between" data-category="webapp">
+                    <div>
+                        <!-- Project Visual Placeholder with SVG Accent -->
+                        <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-dark-surface to-dark-card flex items-center justify-center p-6">
+                            <div class="absolute inset-0 bg-crimson/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <i class="fa-solid fa-chart-line text-6xl text-crimson/40 group-hover:scale-110 group-hover:text-crimson transition-all duration-500"></i>
+                            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-dark-base/80 border border-dark-border text-[11px] text-slate-300 font-mono">
+                                Web App
+                            </div>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold text-white group-hover:text-crimson transition-colors">
+                                FinTech Analytics Dashboard
+                            </h3>
+                            <p class="text-sm text-slate-400 line-clamp-2">
+                                Platform analisis keuangan real-time dengan grafik visual interaktif, manajemen aset, dan laporan otomatis.
+                            </p>
+                            <!-- Tech Stack Chips -->
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">React</span>
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">TypeScript</span>
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">Tailwind CSS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Action Links -->
+                    <div class="p-6 pt-0 flex items-center gap-4">
+                        <a href="#" class="flex-1 py-2.5 rounded-xl bg-crimson/10 hover:bg-crimson text-crimson hover:text-white border border-crimson/30 hover:border-crimson font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-300">
+                            <span>Live Demo</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <a href="#" class="px-3.5 py-2.5 rounded-xl bg-dark-card hover:bg-dark-border text-slate-300 hover:text-white border border-dark-border font-semibold text-xs transition-colors" title="View Source Code">
+                            <i class="fa-brands fa-github text-base"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Item 2 -->
+                <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-dark-border hover:border-crimson/50 transition-all duration-500 flex flex-col justify-between" data-category="uiux">
+                    <div>
+                        <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-dark-surface to-dark-card flex items-center justify-center p-6">
+                            <div class="absolute inset-0 bg-crimson/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <i class="fa-solid fa-wand-magic-sparkles text-6xl text-crimson/40 group-hover:scale-110 group-hover:text-crimson transition-all duration-500"></i>
+                            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-dark-base/80 border border-dark-border text-[11px] text-slate-300 font-mono">
+                                UI/UX Design
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold text-white group-hover:text-crimson transition-colors">
+                                E-Commerce Redesign System
+                            </h3>
+                            <p class="text-sm text-slate-400 line-clamp-2">
+                                Redesain total antarmuka e-commerce fashion terkemuka, meningkatkan rasio konversi checkout hingga 28%.
+                            </p>
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">Figma</span>
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">Design System</span>
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">Prototyping</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 pt-0 flex items-center gap-4">
+                        <a href="#" class="flex-1 py-2.5 rounded-xl bg-crimson/10 hover:bg-crimson text-crimson hover:text-white border border-crimson/30 hover:border-crimson font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-300">
+                            <span>Case Study</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                        <a href="#" class="px-3.5 py-2.5 rounded-xl bg-dark-card hover:bg-dark-border text-slate-300 hover:text-white border border-dark-border font-semibold text-xs transition-colors" title="Figma Preview">
+                            <i class="fa-brands fa-figma text-base"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Item 3 -->
+                <div class="project-card group glass-panel rounded-2xl overflow-hidden border border-dark-border hover:border-crimson/50 transition-all duration-500 flex flex-col justify-between" data-category="mobile">
+                    <div>
+                        <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-dark-surface to-dark-card flex items-center justify-center p-6">
+                            <div class="absolute inset-0 bg-crimson/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <i class="fa-solid fa-mobile-screen-button text-6xl text-crimson/40 group-hover:scale-110 group-hover:text-crimson transition-all duration-500"></i>
+                            <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-dark-base/80 border border-dark-border text-[11px] text-slate-300 font-mono">
+                                Mobile App
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold text-white group-hover:text-crimson transition-colors">
+                                Fitness Tracking Companion
+                            </h3>
+                            <p class="text-sm text-slate-400 line-clamp-2">
+                                Aplikasi pemantau kebugaran harian dengan pelacakan GPS, statistik latihan, dan tantangan bersama komunitas.
+                            </p>
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">React Native</span>
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">Redux Toolkit</span>
+                                <span class="px-2.5 py-1 rounded-md bg-dark-card border border-dark-border text-[11px] text-slate-300 font-medium">Node.js</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 pt-0 flex items-center gap-4">
+                        <a href="#" class="flex-1 py-2.5 rounded-xl bg-crimson/10 hover:bg-crimson text-crimson hover:text-white border border-crimson/30 hover:border-crimson font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-300">
+                            <span>App Store</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <a href="#" class="px-3.5 py-2.5 rounded-xl bg-dark-card hover:bg-dark-border text-slate-300 hover:text-white border border-dark-border font-semibold text-xs transition-colors" title="View Source Code">
+                            <i class="fa-brands fa-github text-base"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="lab" class="py-20 relative bg-dark-surface/50 border-y border-dark-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center max-w-2xl mx-auto">
+                <div class="inline-flex items-center gap-2 text-crimson font-semibold text-sm tracking-wider uppercase mb-2">
+                    <i class="fa-solid fa-flask"></i>
+                    <span>Eksperimen & Playground</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">The Lab.</h2>
+                <p class="text-slate-400 text-sm sm:text-base mt-2">
+                    Kumpulan komponen interaktif, animasi CSS eksperimental, dan mikro-aplikasi yang saya buat saat waktu luang.
+                </p>
+            </div>
+
+            <!-- Lab Grid Showcase -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Interactive Widget 1: Color Gradient Generator -->
+                <div class="glass-panel rounded-2xl p-6 border border-dark-border space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-palette text-crimson text-xl"></i>
+                            <h3 class="font-bold text-white text-base">Interactive Crimson Glow Mixer</h3>
+                        </div>
+                        <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-crimson/20 text-crimson">JS Widget</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Sesuaikan tingkat kecerahan aksen neon untuk menguji visual kontras.</p>
+                    
+                    <div class="space-y-3 pt-2">
+                        <label for="glow-slider" class="text-xs text-slate-300 flex justify-between">
+                            <span>Glow Intensity:</span>
+                            <span id="glow-val" class="text-crimson font-mono">50%</span>
+                        </label>
+                        <input type="range" id="glow-slider" min="0" max="100" value="50" class="w-full accent-crimson bg-dark-card h-2 rounded-lg cursor-pointer">
+                    </div>
+
+                    <div id="glow-demo-box" class="h-20 rounded-xl bg-dark-card border border-dark-border flex items-center justify-center font-mono text-xs text-white transition-all duration-300">
+                        Visualizing Dynamic Glow
+                    </div>
+                </div>
+
+                <!-- Interactive Widget 2: CSS Animation Preview -->
+                <div class="glass-panel rounded-2xl p-6 border border-dark-border space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-atom text-crimson text-xl"></i>
+                            <h3 class="font-bold text-white text-base">Keyframe Physics Simulator</h3>
+                        </div>
+                        <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-crimson/20 text-crimson">CSS Tech</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Klik tombol di bawah untuk menguji efek pantulan physics pada elemen UI.</p>
+                    
+                    <div class="flex items-center justify-around h-20 bg-dark-card rounded-xl border border-dark-border p-2">
+                        <div id="bounce-ball" class="w-10 h-10 rounded-full bg-crimson crimson-glow flex items-center justify-center text-white text-xs">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                    </div>
+
+                    <button id="trigger-bounce-btn" class="w-full py-2 rounded-xl bg-dark-card hover:bg-dark-border text-slate-200 text-xs font-semibold border border-dark-border transition-colors">
+                        Jalankan Animasi Pantul
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Left Column: Biography & Tech Chips -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <div class="flex items-center gap-2 text-crimson font-semibold text-sm tracking-wider uppercase mb-2">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Tentang Saya</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Latar Belakang & Keahlian.</h2>
+                    </div>
+
+                    <p class="text-slate-400 leading-relaxed text-sm sm:text-base">
+                        Saya seorang Software Engineer yang berdomisili di Indonesia dengan passion tinggi dalam menggabungkan estetika desain intuitif dengan arsitektur kode yang efisien.
+                    </p>
+
+                    <!-- Tech Stack Chips Categories -->
+                    <div class="space-y-5">
+                        <h3 class="text-white font-bold text-base flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-crimson"></i>
+                            <span>Tech Stack & Tools</span>
+                        </h3>
+
+                        <!-- Frontend Category -->
+                        <div class="space-y-2">
+                            <span class="text-xs text-slate-400 font-mono">Frontend:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-react text-sky-400"></i> React / Next.js
+                                </span>
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-js text-yellow-400"></i> TypeScript
+                                </span>
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-css3-alt text-cyan-400"></i> Tailwind CSS
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Backend Category -->
+                        <div class="space-y-2">
+                            <span class="text-xs text-slate-400 font-mono">Backend & Database:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-node-js text-green-500"></i> Node.js
+                                </span>
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-database text-blue-400"></i> PostgreSQL
+                                </span>
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-fire text-amber-500"></i> Firebase
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Tools Category -->
+                        <div class="space-y-2">
+                            <span class="text-xs text-slate-400 font-mono">Tools & Platforms:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-git-alt text-orange-500"></i> Git & GitHub
+                                </span>
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-figma text-purple-400"></i> Figma
+                                </span>
+                                <span class="px-3 py-1.5 rounded-lg bg-dark-card border border-dark-border text-xs text-slate-200 font-medium flex items-center gap-2">
+                                    <i class="fa-brands fa-docker text-blue-500"></i> Docker
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Experience Timeline -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel rounded-2xl p-6 sm:p-8 border border-dark-border space-y-6">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-3 pb-4 border-b border-dark-border">
+                            <i class="fa-solid fa-timeline text-crimson"></i>
+                            <span>Pengalaman Kerja & Pendidikan</span>
+                        </h3>
+
+                        <!-- Vertical Timeline Container -->
+                        <div class="relative pl-6 space-y-8 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-dark-border">
+                            
+                            <!-- Timeline Item 1 -->
+                            <div class="relative group">
+                                <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-crimson border-4 border-dark-base crimson-glow"></div>
+                                <div class="space-y-1">
+                                    <span class="text-xs font-mono text-crimson font-semibold">2023 - Sekarang</span>
+                                    <h4 class="text-lg font-bold text-white group-hover:text-crimson transition-colors">Senior Frontend Developer</h4>
+                                    <p class="text-xs text-slate-400">TechCorp Global Studio</p>
+                                    <p class="text-sm text-slate-300 pt-1">
+                                        Memimpin tim frontend dalam mengembangkan aplikasi SaaS berskala besar dengan fokus pada optimasi performa dan arsitektur mikro-frontend.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 2 -->
+                            <div class="relative group">
+                                <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-dark-border group-hover:bg-crimson transition-colors border-4 border-dark-base"></div>
+                                <div class="space-y-1">
+                                    <span class="text-xs font-mono text-slate-400 font-semibold">2021 - 2023</span>
+                                    <h4 class="text-lg font-bold text-white group-hover:text-crimson transition-colors">UI/UX & Frontend Engineer</h4>
+                                    <p class="text-xs text-slate-400">Creative Digital Agency</p>
+                                    <p class="text-sm text-slate-300 pt-1">
+                                        Merancang wireframe, prototype interaktif, serta mengimplementasikannya ke dalam komponen React yang reusable untuk klien korporat.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 3 -->
+                            <div class="relative group">
+                                <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-dark-border group-hover:bg-crimson transition-colors border-4 border-dark-base"></div>
+                                <div class="space-y-1">
+                                    <span class="text-xs font-mono text-slate-400 font-semibold">2017 - 2021</span>
+                                    <h4 class="text-lg font-bold text-white group-hover:text-crimson transition-colors">Sarjana Ilmu Komputer</h4>
+                                    <p class="text-xs text-slate-400">Universitas Teknologi Indonesia</p>
+                                    <p class="text-sm text-slate-300 pt-1">
+                                        Lulus dengan Predikat Pujian (Cum Laude). Fokus studi pada Rekayasa Perangkat Lunak dan Antarmuka Manusia & Komputer.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-dark-surface/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <div class="inline-flex items-center gap-2 text-crimson font-semibold text-sm tracking-wider uppercase mb-2">
+                    <i class="fa-solid fa-quote-left"></i>
+                    <span>Testimoni</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Apa Kata Mereka.</h2>
+            </div>
+
+            <!-- Testimonial Grid Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-panel rounded-2xl p-6 border border-dark-border hover:border-crimson/40 transition-all duration-300 flex flex-col justify-between space-y-4">
+                    <p class="text-sm text-slate-300 italic leading-relaxed">
+                        "Alex adalah pengembang yang sangat luar biasa. Hasil pengerjaan dashboard aplikasi kami tidak hanya cepat tetapi juga sangat rapi secara visual dan performa."
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-dark-border">
+                        <div class="w-10 h-10 rounded-full bg-crimson/20 border border-crimson/40 flex items-center justify-center font-bold text-crimson">
+                            B
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Budi Santoso</h4>
+                            <p class="text-xs text-slate-400">CTO di FinTechCorp</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-panel rounded-2xl p-6 border border-dark-border hover:border-crimson/40 transition-all duration-300 flex flex-col justify-between space-y-4">
+                    <p class="text-sm text-slate-300 italic leading-relaxed">
+                        "Kemampuan Alex dalam menerjemahkan desain kompleks dari Figma menjadi kode yang sangat responsif dan presisi sungguh mengagumkan."
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-dark-border">
+                        <div class="w-10 h-10 rounded-full bg-crimson/20 border border-crimson/40 flex items-center justify-center font-bold text-crimson">
+                            S
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Sarah Wijaya</h4>
+                            <p class="text-xs text-slate-400">Lead Product Designer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-panel rounded-2xl p-6 border border-dark-border hover:border-crimson/40 transition-all duration-300 flex flex-col justify-between space-y-4">
+                    <p class="text-sm text-slate-300 italic leading-relaxed">
+                        "Sangat profesional, komunikasi yang lancar, dan selalu memberikan ide-ide kreatif tambahan yang meningkatkan kualitas proyek kami."
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-dark-border">
+                        <div class="w-10 h-10 rounded-full bg-crimson/20 border border-crimson/40 flex items-center justify-center font-bold text-crimson">
+                            R
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Rian Hidayat</h4>
+                            <p class="text-xs text-slate-400">Founder StartupKita</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Info Box -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="inline-flex items-center gap-2 text-crimson font-semibold text-sm tracking-wider uppercase">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Mari Berdiskusi</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Punya Proyek Menarik?</h2>
+                    <p class="text-slate-400 leading-relaxed text-sm sm:text-base">
+                        Saya selalu terbuka untuk berdiskusi tentang proyek baru, ide kreatif, atau peluang kolaborasi profesional. Jangan ragu untuk menghubungi saya!
+                    </p>
+
+                    <div class="space-y-4 pt-4">
+                        <div class="flex items-center gap-4 p-4 rounded-xl glass-panel border border-dark-border">
+                            <div class="w-10 h-10 rounded-lg bg-crimson/20 text-crimson flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-at"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-slate-400">Email Langsung</span>
+                                <a href="mailto:alex@example.com" class="text-sm font-semibold text-white hover:text-crimson transition-colors">alex.prasetyo@example.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 p-4 rounded-xl glass-panel border border-dark-border">
+                            <div class="w-10 h-10 rounded-lg bg-crimson/20 text-crimson flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-slate-400">Lokasi</span>
+                                <span class="text-sm font-semibold text-white">Jakarta / Bandung, Indonesia (Remote Ready)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Icons Row -->
+                    <div class="pt-2 flex items-center gap-3">
+                        <a href="#" class="w-10 h-10 rounded-xl glass-panel hover:bg-crimson border border-dark-border hover:border-crimson text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300">
+                            <i class="fa-brands fa-github text-base"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass-panel hover:bg-crimson border border-dark-border hover:border-crimson text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300">
+                            <i class="fa-brands fa-linkedin-in text-base"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass-panel hover:bg-crimson border border-dark-border hover:border-crimson text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300">
+                            <i class="fa-brands fa-x-twitter text-base"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass-panel hover:bg-crimson border border-dark-border hover:border-crimson text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300">
+                            <i class="fa-brands fa-instagram text-base"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Contact Form -->
+                <div class="lg:col-span-7">
+                    <form id="contact-form" class="glass-panel rounded-2xl p-6 sm:p-8 border border-dark-border space-y-6">
+                        <h3 class="text-xl font-bold text-white">Kirim Pesan</h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="name" class="block text-xs font-semibold text-slate-300">Nama Lengkap *</label>
+                                <input type="text" id="name" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-dark-border text-slate-200 text-sm focus:outline-none focus:border-crimson transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="email" class="block text-xs font-semibold text-slate-300">Alamat Email *</label>
+                                <input type="email" id="email" required placeholder="john@example.com" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-dark-border text-slate-200 text-sm focus:outline-none focus:border-crimson transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="subject" class="block text-xs font-semibold text-slate-300">Subjek Pesan</label>
+                            <input type="text" id="subject" placeholder="Diskusi Proyek Web App" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-dark-border text-slate-200 text-sm focus:outline-none focus:border-crimson transition-colors">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="message" class="block text-xs font-semibold text-slate-300">Pesan Anda *</label>
+                            <textarea id="message" rows="4" required placeholder="Halo Alex, saya tertarik untuk bekerjasama..." class="w-full px-4 py-3 rounded-xl bg-dark-card border border-dark-border text-slate-200 text-sm focus:outline-none focus:border-crimson transition-colors resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-crimson hover:bg-crimson-hover text-white font-bold text-sm transition-all duration-300 crimson-glow hover:shadow-crimson-glow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Kirim Pesan Sekarang</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-dark-border bg-dark-base py-8 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 Alex Prasetyo. All rights reserved.</p>
+
+            <div class="flex items-center gap-6">
+                <a href="#home" id="download-cv-btn" class="hover:text-crimson transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    <span>Download CV (PDF)</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back To Top Floating Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-crimson text-white crimson-glow flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Mobile Menu Toggle Logic
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // 2. Interactive Project Filtering
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active styles from all buttons
+                    filterButtons.forEach(b => {
+                        b.classList.remove('bg-crimson', 'text-white', 'crimson-glow', 'active');
+                        b.classList.add('glass-panel', 'text-slate-300', 'border', 'border-dark-border');
+                    });
+
+                    // Set active styles to clicked button
+                    btn.classList.add('bg-crimson', 'text-white', 'crimson-glow', 'active');
+                    btn.classList.remove('glass-panel', 'text-slate-300', 'border', 'border-dark-border');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        if (filterValue === 'all' || filterValue === category) {
+                            card.style.display = 'flex';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.95)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+
+            // 3. Interactive Lab Demo 1: Glow Mixer Slider
+            const glowSlider = document.getElementById('glow-slider');
+            const glowValText = document.getElementById('glow-val');
+            const glowDemoBox = document.getElementById('glow-demo-box');
+
+            if (glowSlider && glowValText && glowDemoBox) {
+                glowSlider.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    glowValText.textContent = `${val}%`;
+                    const glowRadius = (val / 100) * 35;
+                    const opacity = (val / 100);
+                    glowDemoBox.style.boxShadow = `0 0 ${glowRadius}px rgba(255, 43, 74, ${opacity})`;
+                    glowDemoBox.style.borderColor = `rgba(255, 43, 74, ${opacity})`;
+                });
+            }
+
+            // 4. Interactive Lab Demo 2: Physics Bounce Simulator
+            const triggerBounceBtn = document.getElementById('trigger-bounce-btn');
+            const bounceBall = document.getElementById('bounce-ball');
+
+            if (triggerBounceBtn && bounceBall) {
+                triggerBounceBtn.addEventListener('click', () => {
+                    bounceBall.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    bounceBall.style.transform = 'translateY(-30px) scale(1.2)';
+                    
+                    setTimeout(() => {
+                        bounceBall.style.transform = 'translateY(0) scale(1)';
+                    }, 250);
+                });
+            }
+
+            // 5. Back to Top Button Visibility
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                    backToTopBtn.classList.add('opacity-100', 'pointer-events-auto');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                    backToTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // 6. Custom Toast Notification Helper (Replaces default browser alerts)
+            function showToast(message, type = 'success') {
+                const toastContainer = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `pointer-events-auto flex items-center gap-3 px-5 py-3.5 rounded-xl glass-panel border border-crimson/50 text-white text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-x-10 opacity-0`;
+                
+                toast.innerHTML = `
+                    <i class="fa-solid ${type === 'success' ? 'fa-circle-check text-crimson' : 'fa-circle-exclamation text-amber-400'} text-lg"></i>
+                    <span>${message}</span>
+                `;
+
+                toastContainer.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-x-10', 'opacity-0');
+                }, 50);
+
+                setTimeout(() => {
+                    toast.classList.add('translate-x-10', 'opacity-0');
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 4000);
+            }
+
+            // 7. Interactive Form Submission
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('name').value;
+                    
+                    // Trigger custom toast alert
+                    showToast(`Terima kasih, ${name}! Pesan Anda berhasil terkirim.`, 'success');
+                    
+                    // Reset form fields
+                    contactForm.reset();
+                });
+            }
+
+            // 8. Download CV Mock Trigger
+            const downloadCvBtn = document.getElementById('download-cv-btn');
+            if (downloadCvBtn) {
+                downloadCvBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showToast('Mengunduh berkas CV (Alex_Prasetyo_CV.pdf)...', 'success');
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
